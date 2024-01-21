@@ -6,6 +6,7 @@
         public static void Add(this TokenComponent self, long key, string token)
         {
             self.TokenDictionary.Add(key,token);
+            //给令牌增加一个过期时间
             self.TimeOutRemoveKey(key,token).Coroutine();
         }
 

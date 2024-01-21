@@ -191,6 +191,7 @@ namespace ET
            {
                UIEventComponent.Instance?.SetUIClicked(true);
                await action();
+               //异步函数执行完毕后，才能再次点击，这里有个问题，如果异步函数出现异常，下面逻辑就不会执行了
                UIEventComponent.Instance?.SetUIClicked(false);
            }
            

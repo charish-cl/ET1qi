@@ -24,6 +24,7 @@ namespace ET
 		
 		public static async ETTask OnLoginClickHandler(this DlgLogin self)
 		{
+			//异常在这里处理，不会抛到外面
 			try
 			{
 				string account = self.View.E_AccountInputField.text;

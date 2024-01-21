@@ -24,10 +24,11 @@ namespace ET
         {
             self.AccountId = accountId;
             TimerComponent.Instance.Remove(ref self.Timer);
+            //判断10分钟后是否还在线
             self.Timer = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + 600000, TimerType.AccountSessionCheckOutTime, self);
         }
     }
-    
+    //主动移除
     public class AccountCheckOutTimeComponentDestroySystem : DestroySystem<AccountCheckOutTimeComponent>
     {
         public override void Destroy(AccountCheckOutTimeComponent self)
@@ -49,6 +50,7 @@ namespace ET
             {
                 session.DomainScene().GetComponent<AccountSessionsComponent>().Remove(self.AccountId);
             }
+            //发送断开连接消息
             session?.Send(new A2C_Disconnect(){Error = 1});
             session?.Disconnect().Coroutine();
         }

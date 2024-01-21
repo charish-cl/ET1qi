@@ -14,25 +14,28 @@ namespace ET
                 session.Dispose();
                 return;
             }
+            //不及时移除，将在5秒后断开连接
             session.RemoveComponent<SessionAcceptTimeoutComponent>();
-
+            //服务端接受客户端多次请求，客户端可能多次点击登录，同时发送多个请求
             if (session.GetComponent<SessionLockingComponent>() != null)
             {
                 response.Error = ErrorCode.ERR_RequestRepeatedly;
                 reply();
+                //reply（）后session不能直接Dispose（），session reply（）是有延迟的
                 session.Disconnect().Coroutine();
                 return;
             }
             
-
+            //判断账号密码是否为空
             if (string.IsNullOrEmpty(request.AccountName) || string.IsNullOrEmpty(request.Password))
             {
+                //返回错误码
                 response.Error = ErrorCode.ERR_LoginInfoIsNull;
                 reply();
                 session.Disconnect().Coroutine();
                 return;
             }
-
+            
             if (!Regex.IsMatch(request.AccountName.Trim(),@"^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).{6,15}$"))
             {
                 response.Error = ErrorCode.ERR_AccountNameFormError;
@@ -59,17 +62,19 @@ namespace ET
                 session.AddComponent<RoleInfosZone>();
             }
             
-
             using (session.AddComponent<SessionLockingComponent>())
             {
+                //登陆账号hashcode作为锁,解决A和B同时注册账号的问题
                 using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoginAccount,request.AccountName.Trim().GetHashCode()))
                 {
                     var accountInfoList = await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Query<Account>(d=>d.AccountName.Equals(request.AccountName.Trim()));
                     Account account     = null;
                     if (accountInfoList!=null && accountInfoList.Count > 0)
                     {
+                        //查询的第一个满足条件的账号
                         account = accountInfoList[0];
                         session.GetComponent<AccountsZone>().AddChild(account);
+                        //判断账号是否在黑名单中
                         if (account.AccountType == (int)AccountType.BlackList)
                         {
                             response.Error = ErrorCode.ERR_AccountInBlackListError;
@@ -79,7 +84,7 @@ namespace ET
                             return;
                         }
 
-
+                        //判断登录密码是否正确
                         if (!account.Password.Equals(request.Password))
                         {
                             response.Error = ErrorCode.ERR_LoginPasswordError;
@@ -112,18 +117,21 @@ namespace ET
                         account?.Dispose();
                         return;
                     }
-                    
+                    //获取当前已经登陆的玩家的ID
                     long accountSessionInstanceId = session.DomainScene().GetComponent<AccountSessionsComponent>().Get(account.Id);
                     Session otherSession   = Game.EventSystem.Get(accountSessionInstanceId) as Session;
+                    //如果当前账号已经登陆，将其踢下线
                     otherSession?.Send(new A2C_Disconnect(){Error = 0});
                     otherSession?.Disconnect().Coroutine();
                     session.DomainScene().GetComponent<AccountSessionsComponent>().Add(account.Id,session.InstanceId);
+                    //挂载在Session上，为何要增加AccountCheckOutTimeComponent,防止玩家直接关闭客户端，导致服务器无法知道玩家下线
                     session.AddComponent<AccountCheckOutTimeComponent, long>(account.Id);
-
+                    
                     string Token = TimeHelper.ServerNow().ToString() + RandomHelper.RandomNumber(int.MinValue, int.MaxValue).ToString();
+                    
+                    //拿到账号服务器上的TokenComponent组件，将Token存入其中,移除旧的Token
                     session.DomainScene().GetComponent<TokenComponent>().Remove(account.Id);
                     session.DomainScene().GetComponent<TokenComponent>().Add(account.Id,Token);
-
                     response.AccountId = account.Id;
                     response.Token     = Token;
 

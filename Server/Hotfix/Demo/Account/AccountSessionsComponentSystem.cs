@@ -24,6 +24,7 @@
 
         public static void Add(this AccountSessionsComponent self, long accountId, long sessionInstanceId)
         {
+            //存在就更新
             if (self.AccountSessionDictionary.ContainsKey(accountId))
             {
                 self.AccountSessionDictionary[accountId] = sessionInstanceId;

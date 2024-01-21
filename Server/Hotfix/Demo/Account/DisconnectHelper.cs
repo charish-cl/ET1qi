@@ -12,7 +12,8 @@
             long instanceId = self.InstanceId;
 
             await TimerComponent.Instance.WaitAsync(1000);
-
+            //如果在等待期间，玩家又重新连接上了，那么就不需要断开连接了
+            //1秒之前的InstanceID和当前的Instance ID不一致，说明玩家又重新连接上了
             if (self.InstanceId != instanceId)
             {
                 return;
