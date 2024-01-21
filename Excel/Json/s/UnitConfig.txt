@@ -1,0 +1,15 @@
+{"list":[
+{"_t":"UnitConfig","_id":1001,"Type":1,"Name":"字母哥","Desc":"宝鱼猎杀者","MaxHP":0,"DamageValue":0},
+{"_t":"UnitConfig","_id":1002,"Type":2,"Name":"弱鸡宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":100,"DamageValue":10},
+{"_t":"UnitConfig","_id":1003,"Type":2,"Name":"新兵宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":200,"DamageValue":20},
+{"_t":"UnitConfig","_id":1004,"Type":2,"Name":"精英宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":300,"DamageValue":30},
+{"_t":"UnitConfig","_id":1005,"Type":2,"Name":"专家宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":400,"DamageValue":40},
+{"_t":"UnitConfig","_id":1006,"Type":2,"Name":"大师宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":500,"DamageValue":50},
+{"_t":"UnitConfig","_id":1007,"Type":2,"Name":"英雄宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":600,"DamageValue":60},
+{"_t":"UnitConfig","_id":1008,"Type":2,"Name":"传奇宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":700,"DamageValue":70},
+{"_t":"UnitConfig","_id":1009,"Type":2,"Name":"半神宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":800,"DamageValue":80},
+{"_t":"UnitConfig","_id":1010,"Type":2,"Name":"圣灵宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":900,"DamageValue":90},
+{"_t":"UnitConfig","_id":1011,"Type":2,"Name":"神灵宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":1000,"DamageValue":100},
+{"_t":"UnitConfig","_id":1012,"Type":2,"Name":"永生宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":1100,"DamageValue":110},
+{"_t":"UnitConfig","_id":1013,"Type":2,"Name":"创世宝鱼","Desc":"吃饭睡觉打宝鱼","MaxHP":1200,"DamageValue":120},
+]}
