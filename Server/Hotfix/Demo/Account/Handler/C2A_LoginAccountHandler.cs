@@ -103,7 +103,7 @@ namespace ET
                         account.AccountType = (int)AccountType.General;
                         await DBManagerComponent.Instance.GetZoneDB(session.DomainZone()).Save<Account>(account);
                     }
-
+                    //向LoginCenter请求登陆
                     StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "LoginCenter");
                     long loginCenterInstanceId = startSceneConfig.InstanceId;
                     var loginAccountResponse  = (L2A_LoginAccountResponse) await ActorMessageSenderComponent.Instance.Call(loginCenterInstanceId,new A2L_LoginAccountRequest(){AccountId = account.Id});

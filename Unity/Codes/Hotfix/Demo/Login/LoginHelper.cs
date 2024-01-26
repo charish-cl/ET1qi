@@ -22,7 +22,7 @@ namespace ET
                 accountSession  = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
                 password        = MD5Helper.StringMD5(password);
                 a2CLoginAccount = (A2C_LoginAccount) await accountSession.Call(new C2A_LoginAccount() { AccountName = account, Password = password });
-            }
+            } 
             catch (Exception e)
             {
                accountSession?.Dispose();
@@ -48,7 +48,11 @@ namespace ET
         }
 
 
-
+        /// <summary>
+        /// 获取服务器列表
+        /// </summary>
+        /// <param name="zoneScene"></param>
+        /// <returns></returns>
         public static async ETTask<int> GetServerInfos(Scene zoneScene)
         {
             A2C_GetServerInfos a2CGetServerInfos = null;
@@ -72,7 +76,7 @@ namespace ET
             {
                 return a2CGetServerInfos.Error;
             }
-
+            //遍历下发来的服务器列表，添加到ServerInfosComponent中  
             foreach (var serverInfoProto in a2CGetServerInfos.ServerInfosList)
             {
                 ServerInfo serverInfo = zoneScene.GetComponent<ServerInfosComponent>().AddChild<ServerInfo>();
@@ -84,7 +88,11 @@ namespace ET
             await ETTask.CompletedTask;
             return ErrorCode.ERR_Success;
         }
-
+        /// <summary>
+        /// 获取角色信息
+        /// </summary>
+        /// <param name="zoneScene"></param>
+        /// <returns></returns>
         public static async ETTask<int> GetRoles(Scene zoneScene)
         {
             A2C_GetRoles a2CGetRoles = null;
@@ -97,7 +105,7 @@ namespace ET
                     Token = zoneScene.GetComponent<AccountInfoComponent>().Token,
                     ServerId = zoneScene.GetComponent<ServerInfosComponent>().CurrentServerId,
                 });
-            }
+            } 
             catch (Exception e)
             {
                 Log.Error(e.ToString());

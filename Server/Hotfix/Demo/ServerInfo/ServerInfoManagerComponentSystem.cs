@@ -20,9 +20,13 @@
             self.ServerInfos.Clear();
         }
     }
-    
+
     public class ServerInfoManagerComponentLoadSystem : LoadSystem<ServerInfoManagerComponent>
     {
+        /// <summary>
+        /// 热重载时调用
+        /// </summary>
+        /// <param name="self"></param>
         public override void Load(ServerInfoManagerComponent self)
         {
             self.Awake().Coroutine();
@@ -35,12 +39,14 @@
     {
         public static async ETTask Awake(this ServerInfoManagerComponent self)
         {
+            //从数据库中获取ServerInfo
             var serverInfoList = await DBManagerComponent.Instance.GetZoneDB(self.DomainZone()).Query<ServerInfo>(d => true);
 
             if (serverInfoList == null || serverInfoList.Count <= 0)
             {
                 Log.Error("serverInfo  count is zero");
-                self.ServerInfos.Clear();
+                self.ServerInfos .Clear();
+                //从Excel中获取ServerInfo
                 var serverInfoConfigs = ServerInfoConfigCategory.Instance.GetAll();
 
                 foreach (var info in serverInfoConfigs.Values)

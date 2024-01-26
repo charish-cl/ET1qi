@@ -13,9 +13,10 @@ namespace ET
                 session.Dispose();
                 return;
             }
-            
+            //防止客户端多次点击创建角色
             if (session.GetComponent<SessionLockingComponent>() != null)
             {
+                //返回请求过于频繁
                 response.Error = ErrorCode.ERR_RequestRepeatedly;
                 reply();
                 session.Disconnect().Coroutine();
@@ -52,7 +53,7 @@ namespace ET
                         reply();
                         return;
                     }
-
+                    //这个地方使用IdGenerater.Instance.GenerateUnitId而不使用GenerateId是有讲究的
                     RoleInfo newRoleInfo = session.GetComponent<RoleInfosZone>().AddChildWithId<RoleInfo>(IdGenerater.Instance.GenerateUnitId(request.ServerId));
                     newRoleInfo.Name = request.Name;
                     newRoleInfo.State = (int)RoleInfoState.Normal;

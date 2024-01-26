@@ -11,7 +11,7 @@
             self.AccountId = roleInfoProto.AccountId;
             self.CreateTime = roleInfoProto.CreateTime;
             self.ServerId = roleInfoProto.ServerId;
-            self.LastLoginTime = roleInfoProto.LastLoginTime;
+            self.LastLoginTime = roleInfoProto.LastLoginTime; 
         }
 
         public static RoleInfoProto ToMessage(this RoleInfo self)
